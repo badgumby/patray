@@ -2,7 +2,7 @@
 // I just wanted a tray icon to launch pavucontrol on my i3 desktop.
 // Use the below command to compile this app:
 // gcc -o paTray $(pkg-config --cflags --libs gtk+-2.0) paTray.c
-// To have the icon show up, you need to have the resources folder in this same directory
+// To have the icon show up, you need to copy it from ./resources/paTray.png to /usr/share/icons/paTray.png
 
 #include <gtk/gtk.h>
 #include <stdio.h>
@@ -24,7 +24,7 @@ int main(int argc, char *argv[])
     gtk_widget_set_size_request (window, 200, -1);
 
     //set try icon file
-    GtkStatusIcon *trayIcon  = gtk_status_icon_new_from_file ("./resources/icon.png");
+    GtkStatusIcon *trayIcon  = gtk_status_icon_new_from_file ("/usr/share/icons/paTray.png");
     //set popup menu for tray icon
     GtkWidget *menu, *menuItemView, *menuItemExit;
     menu = gtk_menu_new();
