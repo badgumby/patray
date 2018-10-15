@@ -21,7 +21,7 @@ int main(int argc, char *argv[])
     gtk_init (&argc, &argv);
 
     GtkWidget *window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
-    gtk_window_set_title (GTK_WINDOW (window), "Pulse Audio Control Tray");
+    gtk_window_set_title (GTK_WINDOW (window), "Pulse Audio Volume Control Tray");
     gtk_widget_set_size_request (window, 200, -1);
 
     //set try icon file
@@ -40,7 +40,7 @@ int main(int argc, char *argv[])
     gtk_menu_shell_append (GTK_MENU_SHELL (menu), menuItemExit);
     gtk_widget_show_all (menu);
     //set tooltip
-    gtk_status_icon_set_tooltip (trayIcon, "Pulse Audio Control Launcher");
+    gtk_status_icon_set_tooltip (trayIcon, "Pulse Audio Volume Control Launcher");
     //connect handlers for mouse events
     g_signal_connect(GTK_STATUS_ICON (trayIcon), "activate", GTK_SIGNAL_FUNC (trayIconActivated), window);
     g_signal_connect(GTK_STATUS_ICON (trayIcon), "popup-menu", GTK_SIGNAL_FUNC (trayIconPopup), menu);
