@@ -8,6 +8,7 @@
 #include <stdio.h>
 
 static void trayView(GtkMenuItem *item, gpointer user_data);
+static void trayAbout(GtkMenuItem *item, gpointer user_data);
 static void trayExit(GtkMenuItem *item, gpointer user_data);
 static void trayIconActivated(GObject *trayIcon, gpointer data);
 static void trayIconPopup(GtkStatusIcon *status_icon, guint button, guint32 activate_time, gpointer popUpMenu);
@@ -26,19 +27,22 @@ int main(int argc, char *argv[])
     //set try icon file
     GtkStatusIcon *trayIcon  = gtk_status_icon_new_from_file ("/usr/share/icons/paTray.png");
     //set popup menu for tray icon
-    GtkWidget *menu, *menuItemView, *menuItemExit;
+    GtkWidget *menu, *menuItemView, *menuItemAbout, *menuItemExit;
     menu = gtk_menu_new();
-    menuItemView = gtk_menu_item_new_with_label ("Launch pavucontrol");
+    menuItemView = gtk_menu_item_new_with_label ("Launch");
+    menuItemAbout = gtk_menu_item_new_with_label ("About");
     menuItemExit = gtk_menu_item_new_with_label ("Exit");
     g_signal_connect (G_OBJECT (menuItemView), "activate", G_CALLBACK (trayView), window);
+    g_signal_connect (G_OBJECT (menuItemAbout), "activate", G_CALLBACK (trayAbout), window);
     g_signal_connect (G_OBJECT (menuItemExit), "activate", G_CALLBACK (trayExit), NULL);
     gtk_menu_shell_append (GTK_MENU_SHELL (menu), menuItemView);
+    gtk_menu_shell_append (GTK_MENU_SHELL (menu), menuItemAbout);
     gtk_menu_shell_append (GTK_MENU_SHELL (menu), menuItemExit);
     gtk_widget_show_all (menu);
     //set tooltip
     gtk_status_icon_set_tooltip (trayIcon, "Pulse Audio Control Launcher");
     //connect handlers for mouse events
-    //g_signal_connect(GTK_STATUS_ICON (trayIcon), "activate", GTK_SIGNAL_FUNC (trayIconActivated), window);
+    g_signal_connect(GTK_STATUS_ICON (trayIcon), "activate", GTK_SIGNAL_FUNC (trayIconActivated), window);
     g_signal_connect(GTK_STATUS_ICON (trayIcon), "popup-menu", GTK_SIGNAL_FUNC (trayIconPopup), menu);
     gtk_status_icon_set_visible(trayIcon, TRUE); //set icon initially visible
 
@@ -69,6 +73,11 @@ static void trayView(GtkMenuItem *item, gpointer window)
     system("pavucontrol");
 }
 
+static void trayAbout(GtkMenuItem *item, gpointer user_data)
+{
+    system("zenity --info --width 200 --height 100 --title='About' --text='paTray\nTray launcher for pavucontrol.\nCreated by BAD Gumby.'");
+}
+
 static void trayExit(GtkMenuItem *item, gpointer user_data)
 {
     printf("exit");
@@ -77,8 +86,8 @@ static void trayExit(GtkMenuItem *item, gpointer user_data)
 
 static void trayIconActivated(GObject *trayIcon, gpointer window)
 {
-      // uncomment to launch pavucontrol on click of tray icon
-      // system("pavucontrol");
+    // Launch pavucontrol
+    system("pavucontrol");
 }
 
 static void trayIconPopup(GtkStatusIcon *status_icon, guint button, guint32 activate_time, gpointer popUpMenu)
